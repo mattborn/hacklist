@@ -8,8 +8,7 @@ const FILES_TO_MANAGE = [
   'styles.css',
   'scripts.js',
   'README.md',
-  '.prettierrc.js',
-  'hacklist.js', // Include self
+  '.prettierrc.js'
 ]
 
 const HACKLIST_DIR = 'hacklist'
