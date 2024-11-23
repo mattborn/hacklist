@@ -32,15 +32,15 @@
 - styles.css
 - scripts.js
 - .prettierrc.js
-- hacklist.js (CLI tool)
-
-## Design Patterns
-
+- hacklist.js (CLI tool)## Design Patterns
 - Use CSS variables for theming (especially dark mode support)
 - Cards should be displayed in a flex-wrapped grid
 - Each card links to its project's relative path
 - Tag-based filtering should be available via tabs
 - Reference: neverbeforeseen.group layout structure
+- Use rem units for consistent scaling (10rem h1, 3rem lede)
+- Full-width layout with 6rem padding
+- Cards flex basis of 15rem with 3rem gap
 
 ## Anti-patterns
 

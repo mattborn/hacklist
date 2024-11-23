@@ -20,19 +20,30 @@
     --color-tab-text-active: #101828;
   }
 }
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
+  margin: 0 auto;
+  padding: 6rem;
   line-height: 1.5;
   background: var(--color-bg);
   color: var(--color-text);
 }
+
+h1 {
+  font-size: 10rem;
+  line-height: 1;
+  margin: 0;
+}
+.lede {
+  font-size: 3rem;
+  margin: 0 0 2rem;
+}
+
 .tabs {
   display: flex;
   gap: 8px;
-  margin-bottom: 40px;
+  margin-bottom: 3rem;
   flex-wrap: wrap;
 }
 .tab {
@@ -43,19 +54,24 @@ body {
   color: var(--color-tab-text);
   cursor: pointer;
 }
+.tab span {
+  opacity: 0.5;
+  margin-left: 4px;
+}
 .tab.active {
   background: var(--color-tab-active);
   color: var(--color-tab-text-active);
 }
+
 .cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 48px;
-  margin: 0 -20px;
+  gap: 3rem;
+  margin: 0 -1rem;
 }
 .card {
-  flex: 1 1 300px;
-  padding: 20px;
+  flex: 1 1 15rem;
+  padding: 1rem;
   text-decoration: none;
   color: inherit;
   transition: background 0.2s ease;
@@ -71,8 +87,13 @@ body {
   margin: 0;
   color: var(--color-text-secondary);
 }
+.url,
 .tags {
   margin-top: 8px;
   font-size: 14px;
   color: var(--color-text-secondary);
+}
+.tag {
+  display: inline-block;
+  margin-right: 8px;
 }

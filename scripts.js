@@ -4,6 +4,8 @@ fetch('cards.json')
     const container = document.getElementById('cards')
     const tabs = document.getElementById('tabs')
     const tags = new Set(['all'])
+    const totalCount = cards.filter(card => card.title).length
+    document.querySelector('.tab[data-tag="all"]').innerHTML = `All<span>${totalCount}</span>`
 
     // Collect unique tags
     cards.forEach(card => {
@@ -15,9 +17,10 @@ fetch('cards.json')
     // Create tag filters
     tags.forEach(tag => {
       if (tag !== 'all') {
+        const count = cards.filter(card => card.tags?.includes(tag)).length
         const button = document.createElement('button')
         button.className = 'tab'
-        button.textContent = tag
+        button.innerHTML = `${tag}<span>${count}</span>`
         button.dataset.tag = tag
         tabs.appendChild(button)
       }
@@ -52,7 +55,8 @@ fetch('cards.json')
       a.innerHTML = `
                 <h2>${card.title}</h2>
                 ${card.description ? `<p>${card.description}</p>` : ''}
-                ${card.tags?.length ? `<div class="tags">${card.tags.join(' · ')}</div>` : ''}
+                ${card.urls?.[0] ? `<div class="url">${card.urls[0]}</div>` : ''}
+                ${card.tags?.length ? `<div class="tags">${card.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
             `
 
       container.appendChild(a)

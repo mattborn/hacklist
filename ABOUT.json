@@ -2,6 +2,6 @@
   "title": "Hacklist",
   "description": "This page where you are most likely reading this.",
   "image": "",
-  "tags": [],
-  "url": ["hacklist.net"]
+  "tags": ["Pause", "Pushed"],
+  "urls": ["hacklist.net"]
 }
