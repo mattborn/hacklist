@@ -2,8 +2,7 @@
 
 const fs = require('fs').promises
 const path = require('path')
-
-const FILES_TO_MANAGE = ['index.html', 'styles.css', 'scripts.js', 'README.md', '.prettierrc.js']
+const FILES_TO_MANAGE = ['index.html', 'README.md', '.prettierrc.js']
 
 const HACKLIST_DIR = 'hacklist'
 
