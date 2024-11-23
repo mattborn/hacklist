@@ -3,13 +3,7 @@
 const fs = require('fs').promises
 const path = require('path')
 
-const FILES_TO_MANAGE = [
-  'index.html',
-  'styles.css',
-  'scripts.js',
-  'README.md',
-  '.prettierrc.js'
-]
+const FILES_TO_MANAGE = ['index.html', 'styles.css', 'scripts.js', 'README.md', '.prettierrc.js']
 
 const HACKLIST_DIR = 'hacklist'
 
@@ -18,7 +12,7 @@ async function copyFiles() {
     for (const file of FILES_TO_MANAGE) {
       const sourcePath = path.join(HACKLIST_DIR, file)
       const destPath = path.join('.', file)
-      
+
       try {
         await fs.access(sourcePath)
         await fs.copyFile(sourcePath, destPath)
