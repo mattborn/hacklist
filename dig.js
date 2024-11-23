@@ -13,14 +13,11 @@ const FILES_TO_MANAGE = [
 
 const HACKLIST_DIR = 'hacklist'
 
-async function moveFiles(source, dest) {
+async function copyFiles() {
   try {
-    // Ensure destination directory exists
-    await fs.mkdir(dest, { recursive: true })
-    
     for (const file of FILES_TO_MANAGE) {
-      const sourcePath = path.join(source, file)
-      const destPath = path.join(dest, file)
+      const sourcePath = path.join(HACKLIST_DIR, file)
+      const destPath = path.join('.', file)
       
       try {
         await fs.access(sourcePath)
@@ -38,13 +35,4 @@ async function moveFiles(source, dest) {
   }
 }
 
-const command = process.argv[2]
-
-if (command === 'bury') {
-  moveFiles('.', HACKLIST_DIR)
-} else if (command === 'dig') {
-  moveFiles(HACKLIST_DIR, '.')
-} else {
-  console.log('Usage: node hacklist.js [bury|dig]')
-  process.exit(1)
-}
+copyFiles()

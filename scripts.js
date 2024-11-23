@@ -50,6 +50,7 @@ fetch('cards.json')
             a.dataset.tags = card.tags?.join(',') || '';
             
             a.innerHTML = `
+                <img src="${card.image || ''}" alt="" />
                 <h2>${card.title}</h2>
                 ${card.description ? `<p>${card.description}</p>` : ''}
                 ${card.tags?.length ? `<div class="tags">${card.tags.join(' · ')}</div>` : ''}
