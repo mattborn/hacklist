@@ -28,10 +28,11 @@ fetch('cards.json')
 
     // Add click handlers
     tabs.addEventListener('click', e => {
-      if (e.target.classList.contains('tab')) {
+      const tab = e.target.closest('.tab')
+      if (tab) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
-        e.target.classList.add('active')
-        const selectedTag = e.target.dataset.tag
+        tab.classList.add('active')
+        const selectedTag = tab.dataset.tag
 
         document.querySelectorAll('.card').forEach(card => {
           if (selectedTag === 'all' || card.dataset.tags.includes(selectedTag)) {
@@ -43,6 +44,35 @@ fetch('cards.json')
       }
     })
 
+    // Create gear icon and menu
+    const menuContainer = document.createElement('div')
+    menuContainer.className = 'menu-container'
+    menuContainer.innerHTML = `
+      <button class="gear-icon" aria-label="Settings">
+        <i class="fas fa-cog"></i>
+      </button>
+      <div class="menu">
+        <label class="menu-item">
+          <input type="checkbox" id="show-images">
+          Show Images
+        </label>
+      </div>
+    `
+    document.body.appendChild(menuContainer)
+
+    // Add menu toggle functionality
+    const gearIcon = document.querySelector('.gear-icon')
+    const menu = document.querySelector('.menu')
+    gearIcon.addEventListener('click', () => {
+      menu.classList.toggle('show')
+    })
+
+    // Add image toggle functionality
+    const imageToggle = document.getElementById('show-images')
+    imageToggle.addEventListener('change', () => {
+      document.body.classList.toggle('show-images', imageToggle.checked)
+    })
+
     // Render cards
     cards.forEach(card => {
       if (!card.title) return
@@ -52,7 +82,10 @@ fetch('cards.json')
       a.href = card.path
       a.dataset.tags = card.tags?.join(',') || ''
 
+      const defaultImage = 'data:image/gif;base64,R0lGODlhAQABAAAAACw='
+
       a.innerHTML = `
+                <img class="card-image" src="${card.image || defaultImage}" alt="">
                 <h2>${card.title}</h2>
                 ${card.description ? `<p>${card.description}</p>` : ''}
                 <div class="links">
