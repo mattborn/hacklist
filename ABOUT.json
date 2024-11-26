@@ -2,6 +2,7 @@
   "title": "Hacklist",
   "description": "This page where you are most likely reading this.",
   "image": "",
-  "tags": ["Pause", "Pushed"],
+  "repo": "mattborn/hacklist",
+  "tags": ["Later"],
   "urls": ["hacklist.net"]
 }

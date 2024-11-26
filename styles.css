@@ -97,3 +97,33 @@ h1 {
   display: inline-block;
   margin-right: 8px;
 }
+
+.links {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.url {
+  margin-top: 0;
+}
+
+.github {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.github:hover {
+  opacity: 0.7;
+}
+
+.github i {
+  font-size: 16px;
+}

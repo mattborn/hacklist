@@ -55,8 +55,19 @@ fetch('cards.json')
       a.innerHTML = `
                 <h2>${card.title}</h2>
                 ${card.description ? `<p>${card.description}</p>` : ''}
-                ${card.urls?.[0] ? `<div class="url">${card.urls[0]}</div>` : ''}
-                ${card.tags?.length ? `<div class="tags">${card.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
+                <div class="links">
+                    ${card.urls?.[0] ? `<div class="url">${card.urls[0]}</div>` : ''}
+                    ${
+                      card.repo
+                        ? `<a href="https://github.com/${card.repo}" class="github" target="_blank"><i class="fab fa-github"></i> ${card.repo}</a>`
+                        : ''
+                    }
+                </div>
+                ${
+                  card.tags?.length
+                    ? `<div class="tags">${card.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>`
+                    : ''
+                }
             `
 
       container.appendChild(a)
