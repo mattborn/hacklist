@@ -1,10 +1,10 @@
 fetch('cards.json')
   .then(response => response.json())
   .then(cards => {
-    // Sort cards by date by default
+    // Initial sort by creation date
     cards.sort((a, b) => {
-      const dateA = new Date(a.lastModified?.replace(' ', 'T')).getTime() || 0
-      const dateB = new Date(b.lastModified?.replace(' ', 'T')).getTime() || 0
+      const dateA = new Date(a.created?.replace(' ', 'T')).getTime() || 0
+      const dateB = new Date(b.created?.replace(' ', 'T')).getTime() || 0
       return dateB - dateA // Newest first
     })
     const container = document.getElementById('cards')
@@ -88,11 +88,16 @@ fetch('cards.json')
         const visibleCards = Array.from(container.querySelectorAll('.card'))
 
         visibleCards.sort((a, b) => {
-          if (sortBy === 'date') {
-            // Parse the full timestamps for proper comparison
+          if (sortBy === 'created') {
+            // Sort by creation date
+            const dateA = new Date(a.dataset.created.replace(' ', 'T')).getTime() || 0
+            const dateB = new Date(b.dataset.created.replace(' ', 'T')).getTime() || 0
+            return dateB - dateA // Newest first
+          } else if (sortBy === 'date') {
+            // Sort by last modified
             const dateA = new Date(a.dataset.lastModified.replace(' ', 'T')).getTime() || 0
             const dateB = new Date(b.dataset.lastModified.replace(' ', 'T')).getTime() || 0
-            return dateB - dateA // Sort newest first
+            return dateB - dateA // Most recent first
           } else if (sortBy === 'folder') {
             // Sort by path/folder name
             const pathA = a.getAttribute('href')?.toLowerCase() || ''
@@ -125,6 +130,7 @@ fetch('cards.json')
 
       const defaultImage = 'data:image/gif;base64,R0lGODlhAQABAAAAACw='
 
+      a.dataset.created = card.created || ''
       a.dataset.lastModified = card.lastModified || ''
       a.innerHTML = `
                 <img class="card-image" src="${card.image || defaultImage}" alt="">
