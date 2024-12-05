@@ -40,12 +40,56 @@ h1 {
   margin: 0 0 2rem;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+}
+
 .tabs {
   display: flex;
   gap: 8px;
-  margin-bottom: 3rem;
   flex-wrap: wrap;
+  flex: 1;
 }
+
+.sort-select {
+  padding: 8px 16px;
+  background: var(--color-tab);
+  border: none;
+  border-radius: 20px;
+  color: var(--color-tab-text);
+  cursor: pointer;
+  margin-left: 1rem;
+  font-family: inherit;
+  font-size: 14px;
+  appearance: none;
+  padding-right: 32px;
+  position: relative;
+}
+
+.sort-select + .fa-chevron-down {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: currentColor;
+  font-size: 12px;
+}
+
+.sort-select:hover {
+  background-color: var(--color-tab-active);
+  color: var(--color-tab-text-active);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sort-select:hover {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23101828' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+}
+
 .tab {
   padding: 8px 16px;
   background: var(--color-tab);

@@ -1,6 +1,12 @@
 fetch('cards.json')
   .then(response => response.json())
   .then(cards => {
+    // Sort cards by date by default
+    cards.sort((a, b) => {
+      const dateA = new Date(a.lastModified?.replace(' ', 'T')).getTime() || 0
+      const dateB = new Date(b.lastModified?.replace(' ', 'T')).getTime() || 0
+      return dateB - dateA // Newest first
+    })
     const container = document.getElementById('cards')
     const tabs = document.getElementById('tabs')
     const tags = new Set(['all'])
@@ -73,6 +79,41 @@ fetch('cards.json')
       document.body.classList.toggle('show-images', imageToggle.checked)
     })
 
+    // Add sort handler
+    const sortSelect = document.getElementById('sort')
+    if (sortSelect) {
+      sortSelect.addEventListener('change', () => {
+        const sortBy = sortSelect.value
+        const container = document.getElementById('cards')
+        const visibleCards = Array.from(container.querySelectorAll('.card'))
+
+        visibleCards.sort((a, b) => {
+          if (sortBy === 'date') {
+            // Parse the full timestamps for proper comparison
+            const dateA = new Date(a.dataset.lastModified.replace(' ', 'T')).getTime() || 0
+            const dateB = new Date(b.dataset.lastModified.replace(' ', 'T')).getTime() || 0
+            return dateB - dateA // Sort newest first
+          } else if (sortBy === 'folder') {
+            // Sort by path/folder name
+            const pathA = a.getAttribute('href')?.toLowerCase() || ''
+            const pathB = b.getAttribute('href')?.toLowerCase() || ''
+            return pathA.localeCompare(pathB)
+          } else {
+            // Sort by title
+            const titleA = a.querySelector('h2')?.textContent?.toLowerCase() || ''
+            const titleB = b.querySelector('h2')?.textContent?.toLowerCase() || ''
+            return titleA.localeCompare(titleB)
+          }
+        })
+
+        // Remove all cards and append them in the new order
+        visibleCards.forEach(card => {
+          card.remove()
+          container.appendChild(card)
+        })
+      })
+    }
+
     // Render cards
     cards.forEach(card => {
       if (!card.title) return
@@ -84,6 +125,7 @@ fetch('cards.json')
 
       const defaultImage = 'data:image/gif;base64,R0lGODlhAQABAAAAACw='
 
+      a.dataset.lastModified = card.lastModified || ''
       a.innerHTML = `
                 <img class="card-image" src="${card.image || defaultImage}" alt="">
                 <h2>${card.title}</h2>

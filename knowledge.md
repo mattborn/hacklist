@@ -26,6 +26,12 @@
 - Ensure editor is configured to format on save using project's Prettier config
 - Maintain consistent spacing and quotes across all files
 
+## JavaScript Patterns
+- Initialize DOM event handlers after content is rendered
+- Place script tags at end of body or use defer attribute
+- Verify element existence before adding event listeners
+- When using select elements, ensure options are populated before adding handlers
+
 ## Managed Files
 
 - index.html

@@ -11,8 +11,18 @@
   <body>
     <h1>Hack</h1>
     <div class="lede">Here lies everything I’m hacking on locally.</div>
-    <div class="tabs" id="tabs">
-      <button class="tab active" data-tag="all">All</button>
+    <div class="header">
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tag="all">All</button>
+      </div>
+      <div style="position: relative">
+        <select id="sort" class="sort-select">
+          <option value="date">Newest</option>
+          <option value="folder">By folder</option>
+          <option value="name">By name</option>
+        </select>
+        <i class="fas fa-chevron-down"></i>
+      </div>
     </div>
     <div class="cards" id="cards"></div>
   </body>
