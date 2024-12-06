@@ -1,3 +1,8 @@
+dayjs.extend(window.dayjs_plugin_relativeTime)
+
+// Add helper function at the top
+const getRelativeTime = date => dayjs(date.replace(' ', 'T')).fromNow()
+
 fetch('cards.json')
   .then(response => response.json())
   .then(cards => {
@@ -133,23 +138,26 @@ fetch('cards.json')
       a.dataset.created = card.created || ''
       a.dataset.lastModified = card.lastModified || ''
       a.innerHTML = `
-                <img class="card-image" src="${card.image || defaultImage}" alt="">
-                <h2>${card.title}</h2>
-                ${card.description ? `<p>${card.description}</p>` : ''}
-                <div class="links">
-                    ${card.urls?.[0] ? `<div class="url">${card.urls[0]}</div>` : ''}
-                    ${
-                      card.repo
-                        ? `<a href="https://github.com/${card.repo}" class="github" target="_blank"><i class="fab fa-github"></i> ${card.repo}</a>`
-                        : ''
-                    }
-                </div>
-                ${
-                  card.tags?.length
-                    ? `<div class="tags">${card.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>`
-                    : ''
-                }
-            `
+        <img class="card-image" src="${card.image || defaultImage}" alt="">
+        <h2>${card.title}</h2>
+        ${card.description ? `<p>${card.description}</p>` : ''}
+        <div class="links">
+            ${card.urls?.[0] ? `<div class="url">${card.urls[0]}</div>` : ''}
+            ${
+              card.repo
+                ? `<a href="https://github.com/${card.repo}" class="github" target="_blank"><i class="fab fa-github"></i> ${card.repo}</a>`
+                : ''
+            }
+        </div>
+        <div class="card-footer">
+          ${
+            card.tags?.length
+              ? `<div class="tags">${card.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>`
+              : '<div></div>'
+          }
+          <div class="timestamp">${getRelativeTime(card.lastModified)}</div>
+        </div>
+      `
 
       container.appendChild(a)
     })

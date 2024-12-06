@@ -224,3 +224,20 @@ h1 {
   gap: 8px;
   cursor: pointer;
 }
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.card-footer .tags {
+  margin-top: 0;
+}
+
+.timestamp {
+  opacity: 0.7;
+}
