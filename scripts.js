@@ -37,23 +37,12 @@ fetch('cards.json')
       }
     })
 
-    // Add click handlers
-    tabs.addEventListener('click', e => {
-      const tab = e.target.closest('.tab')
-      if (tab) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
-        tab.classList.add('active')
-        const selectedTag = tab.dataset.tag
+    // Load saved preferences
+    const savedTag = localStorage.getItem('selectedTag') || 'all'
+    const showImages = localStorage.getItem('showImages') === 'true'
 
-        document.querySelectorAll('.card').forEach(card => {
-          if (selectedTag === 'all' || card.dataset.tags.includes(selectedTag)) {
-            card.style.display = ''
-          } else {
-            card.style.display = 'none'
-          }
-        })
-      }
-    })
+    // Set initial active tag
+    document.querySelector(`.tab[data-tag="${savedTag}"]`)?.classList.add('active')
 
     // Create gear icon and menu
     const menuContainer = document.createElement('div')
@@ -71,6 +60,10 @@ fetch('cards.json')
     `
     document.body.appendChild(menuContainer)
 
+    // Set initial image toggle state after menu is created
+    document.body.classList.toggle('show-images', showImages)
+    document.getElementById('show-images').checked = showImages
+
     // Add menu toggle functionality
     const gearIcon = document.querySelector('.gear-icon')
     const menu = document.querySelector('.menu')
@@ -81,7 +74,9 @@ fetch('cards.json')
     // Add image toggle functionality
     const imageToggle = document.getElementById('show-images')
     imageToggle.addEventListener('change', () => {
-      document.body.classList.toggle('show-images', imageToggle.checked)
+      const showImages = imageToggle.checked
+      document.body.classList.toggle('show-images', showImages)
+      localStorage.setItem('showImages', showImages)
     })
 
     // Add sort handler
@@ -160,5 +155,35 @@ fetch('cards.json')
       `
 
       container.appendChild(a)
+    })
+
+    // Apply initial filter after cards are rendered
+    document.querySelectorAll('.card').forEach(card => {
+      if (savedTag === 'all' || card.dataset.tags.includes(savedTag)) {
+        card.style.display = ''
+      } else {
+        card.style.display = 'none'
+      }
+    })
+
+    // Add click handlers for tags
+    tabs.addEventListener('click', e => {
+      const tab = e.target.closest('.tab')
+      if (tab) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+        tab.classList.add('active')
+        const selectedTag = tab.dataset.tag
+
+        // Save selected tag
+        localStorage.setItem('selectedTag', selectedTag)
+
+        document.querySelectorAll('.card').forEach(card => {
+          if (selectedTag === 'all' || card.dataset.tags.includes(selectedTag)) {
+            card.style.display = ''
+          } else {
+            card.style.display = 'none'
+          }
+        })
+      }
     })
   })
