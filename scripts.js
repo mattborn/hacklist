@@ -139,8 +139,8 @@ fetch('cards.json')
         <div class="links">
             ${card.urls?.[0] ? `<div class="url">${card.urls[0]}</div>` : ''}
             ${
-              card.repo
-                ? `<a href="https://github.com/${card.repo}" class="github" target="_blank"><i class="fab fa-github"></i> ${card.repo}</a>`
+              card.repo && card.repo !== 'mattborn/'
+                ? `<a href="https://github.com/${card.repo}" class="github" target="_blank" title="${card.repo}"><i class="fab fa-github"></i></a>`
                 : ''
             }
         </div>

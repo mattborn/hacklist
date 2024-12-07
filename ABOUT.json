@@ -1,8 +1,8 @@
 {
-  "title": "Hacklist",
   "description": "This page where you are most likely reading this.",
   "image": "",
   "repo": "mattborn/hacklist",
   "tags": ["OSS", "Snooze"],
+  "title": "Hacklist 🟢",
   "urls": ["hacklist.net"]
 }
