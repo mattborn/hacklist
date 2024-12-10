@@ -82,42 +82,45 @@ fetch('cards.json')
     // Add sort handler
     const sortSelect = document.getElementById('sort')
     if (sortSelect) {
-      sortSelect.addEventListener('change', () => {
-        const sortBy = sortSelect.value
-        const container = document.getElementById('cards')
-        const visibleCards = Array.from(container.querySelectorAll('.card'))
-
-        visibleCards.sort((a, b) => {
-          if (sortBy === 'created') {
-            // Sort by creation date
-            const dateA = new Date(a.dataset.created.replace(' ', 'T')).getTime() || 0
-            const dateB = new Date(b.dataset.created.replace(' ', 'T')).getTime() || 0
-            return dateB - dateA // Newest first
-          } else if (sortBy === 'date') {
-            // Sort by last modified
-            const dateA = new Date(a.dataset.lastModified.replace(' ', 'T')).getTime() || 0
-            const dateB = new Date(b.dataset.lastModified.replace(' ', 'T')).getTime() || 0
-            return dateB - dateA // Most recent first
-          } else if (sortBy === 'folder') {
-            // Sort by path/folder name
-            const pathA = a.getAttribute('href')?.toLowerCase() || ''
-            const pathB = b.getAttribute('href')?.toLowerCase() || ''
-            return pathA.localeCompare(pathB)
-          } else {
-            // Sort by title
-            const titleA = a.querySelector('h2')?.textContent?.toLowerCase() || ''
-            const titleB = b.querySelector('h2')?.textContent?.toLowerCase() || ''
-            return titleA.localeCompare(titleB)
-          }
-        })
-
-        // Remove all cards and append them in the new order
-        visibleCards.forEach(card => {
-          card.remove()
-          container.appendChild(card)
-        })
-      })
+      sortSelect.value = 'date'
+      // Trigger initial sort
+      const event = new Event('change')
+      sortSelect.dispatchEvent(event)
     }
+
+    // Replace the existing sort handler with this updated version
+    sortSelect.addEventListener('change', () => {
+      const sortBy = sortSelect.value
+      const container = document.getElementById('cards')
+      const visibleCards = Array.from(container.querySelectorAll('.card:not([style*="display: none"])'))
+
+      visibleCards.sort((a, b) => {
+        if (sortBy === 'created') {
+          // Sort by creation date
+          const dateA = new Date(a.dataset.created.replace(' ', 'T')).getTime() || 0
+          const dateB = new Date(b.dataset.created.replace(' ', 'T')).getTime() || 0
+          return dateB - dateA // Newest first
+        } else if (sortBy === 'date') {
+          // Sort by last modified
+          const dateA = new Date(a.dataset.lastModified.replace(' ', 'T')).getTime() || 0
+          const dateB = new Date(b.dataset.lastModified.replace(' ', 'T')).getTime() || 0
+          return dateB - dateA // Most recent first
+        } else if (sortBy === 'folder') {
+          // Sort by path/folder name
+          const pathA = a.getAttribute('href')?.toLowerCase() || ''
+          const pathB = b.getAttribute('href')?.toLowerCase() || ''
+          return pathA.localeCompare(pathB)
+        } else {
+          // Sort by title
+          const titleA = a.querySelector('h2')?.textContent?.toLowerCase() || ''
+          const titleB = b.querySelector('h2')?.textContent?.toLowerCase() || ''
+          return titleA.localeCompare(titleB)
+        }
+      })
+
+      // Remove all cards and append them in the new order
+      visibleCards.forEach(card => container.appendChild(card))
+    })
 
     // Render cards
     cards.forEach(card => {

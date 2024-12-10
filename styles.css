@@ -55,6 +55,7 @@ h1 {
 }
 
 .sort-select {
+  min-width: 120px;
   padding: 8px 16px;
   background: var(--color-tab);
   border: none;
@@ -238,4 +239,9 @@ h1 {
 
 .timestamp {
   opacity: 0.7;
+}
+
+.sort-select option {
+  background: var(--color-bg);
+  color: var(--color-text);
 }
