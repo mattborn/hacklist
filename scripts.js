@@ -1,3 +1,5 @@
+import { generateProjectImage } from './images.js'
+
 dayjs.extend(window.dayjs_plugin_relativeTime)
 
 // Add helper function at the top
@@ -131,12 +133,21 @@ fetch('cards.json')
       a.href = card.path
       a.dataset.tags = card.tags?.join(',') || ''
 
-      const defaultImage = 'data:image/gif;base64,R0lGODlhAQABAAAAACw='
+      // Generate image if none exists
+      let imageElement
+      if (card.image) {
+        imageElement = `<img class="card-image" src="${card.image}" alt="">`
+      } else {
+        const canvas = generateProjectImage(card.title)
+        // Convert canvas to data URL to preserve the rendered content
+        const dataUrl = canvas.toDataURL('image/png')
+        imageElement = `<img class="card-image" src="${dataUrl}" alt="">`
+      }
 
       a.dataset.created = card.created || ''
       a.dataset.lastModified = card.lastModified || ''
       a.innerHTML = `
-        <img class="card-image" src="${card.image || defaultImage}" alt="">
+        ${imageElement}
         <h2>${card.title}</h2>
         ${card.description ? `<p>${card.description}</p>` : ''}
         <div class="links">
