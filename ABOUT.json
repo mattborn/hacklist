@@ -1,8 +1,9 @@
 {
+  "deps": [],
   "description": "This page where you are most likely reading this.",
   "image": "",
   "repo": "mattborn/hacklist",
-  "tags": ["OSS", "Snooze"],
+  "tags": ["CLI", "OSS", "Snooze"],
   "title": "Hacklist 🟢",
   "urls": ["hacklist.net"]
 }

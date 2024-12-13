@@ -5,6 +5,9 @@ dayjs.extend(window.dayjs_plugin_relativeTime)
 // Add helper function at the top
 const getRelativeTime = date => dayjs(date.replace(' ', 'T')).fromNow()
 
+// Add this at the start of the file, before the fetch
+document.body.classList.add('loading')
+
 fetch('cards.json')
   .then(response => response.json())
   .then(cards => {
@@ -195,5 +198,17 @@ fetch('cards.json')
           }
         })
       }
+    })
+
+    // Move ScrollReveal here, after everything is rendered
+    ScrollReveal().reveal('h1, .lede, .tab, .card', {
+      cleanup: true,
+      distance: '20%',
+      interval: 30,
+      origin: 'bottom',
+      afterReveal: () => {
+        // Remove loading state only after first reveal is complete
+        document.body.classList.remove('loading')
+      },
     })
   })
