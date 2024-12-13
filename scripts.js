@@ -8,6 +8,22 @@ const getRelativeTime = date => dayjs(date.replace(' ', 'T')).fromNow()
 // Add this at the start of the file, before the fetch
 document.body.classList.add('loading')
 
+// Add this near the top of the file, before the fetch
+const ledeTexts = [
+  'Here lies everything I’m hacking on locally.',
+  'I want to make beautiful things, even if nobody cares.',
+]
+
+// Add this function after the ledeTexts array
+function updateLedeText() {
+  const ledeElement = document.querySelector('.lede')
+  const randomIndex = Math.floor(Math.random() * 2) // Will give 0 or 1 with equal probability
+  ledeElement.textContent = ledeTexts[randomIndex]
+}
+
+// Add this right after document.body.classList.add('loading')
+updateLedeText()
+
 fetch('cards.json')
   .then(response => response.json())
   .then(cards => {
