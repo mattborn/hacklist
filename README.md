@@ -13,9 +13,14 @@
 
 ## Next Steps
 
-- [ ] Identify active projects to move
-- [ ] Create index project with previews/links
-- [ ] Set up quick navigation between projects
+- [x] Identify active projects to move
+- [x] Create index project with previews/links
+- [x] Set up quick navigation between projects
+
+## Monorepo init
+
+- Run `node hacklist/init` to add all submodules
+- To not have to think about the nuance of 50+ projects, run `git submodule foreach 'git add . && git commit -m "monorepo init 🔴" || echo "No changes in $(basename $PWD)"'`
 
 ## Prerequisites
 

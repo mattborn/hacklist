@@ -24,7 +24,57 @@ function updateLedeText() {
 // Add this right after document.body.classList.add('loading')
 updateLedeText()
 
-fetch('cards.json')
+// Add this near the top of the file, before the fetch
+const dbName = 'imageCache'
+const storeName = 'images'
+let db
+
+// Initialize IndexedDB
+const initDB = () => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(dbName, 1)
+
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => {
+      db = request.result
+      resolve(db)
+    }
+
+    request.onupgradeneeded = event => {
+      const db = event.target.result
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName)
+      }
+    }
+  })
+}
+
+// Helper function to get/set images from IndexedDB
+const imageCache = {
+  async get(key) {
+    return new Promise(resolve => {
+      const transaction = db.transaction(storeName, 'readonly')
+      const store = transaction.objectStore(storeName)
+      const request = store.get(key)
+      request.onsuccess = () => resolve(request.result)
+      request.onerror = () => resolve(null)
+    })
+  },
+
+  async set(key, value) {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(storeName, 'readwrite')
+      const store = transaction.objectStore(storeName)
+      const request = store.put(value, key)
+      request.onsuccess = () => resolve()
+      request.onerror = () => reject(request.error)
+    })
+  },
+}
+
+// Modify the fetch chain to initialize DB first
+initDB()
+  .then(() => fetch('cards.json'))
   .then(response => response.json())
   .then(cards => {
     // Initial sort by creation date
@@ -137,7 +187,7 @@ fetch('cards.json')
     }
 
     // Render cards
-    cards.forEach(card => {
+    cards.forEach(async card => {
       if (!card.title) return
 
       const a = document.createElement('a')
@@ -145,15 +195,27 @@ fetch('cards.json')
       a.href = card.path
       a.dataset.tags = card.tags?.join(',') || ''
 
-      // Generate image if none exists
+      // Generate image if none exists, with caching
       let imageElement
       if (card.image) {
         imageElement = `<img class="card-image" src="${card.image}" alt="">`
       } else {
-        const canvas = generateProjectImage(card.title)
-        // Convert canvas to data URL to preserve the rendered content
-        const dataUrl = canvas.toDataURL('image/png')
-        imageElement = `<img class="card-image" src="${dataUrl}" alt="">`
+        // Create a cache key based on the title
+        const cacheKey = `generatedImage_${card.title}`
+        let imageDataUrl = await imageCache.get(cacheKey)
+
+        if (!imageDataUrl) {
+          // Generate image only if not in cache
+          const canvas = generateProjectImage(card.title)
+          imageDataUrl = canvas.toDataURL('image/png')
+          try {
+            await imageCache.set(cacheKey, imageDataUrl)
+          } catch (e) {
+            console.error('Failed to cache image:', e)
+          }
+        }
+
+        imageElement = `<img class="card-image" src="${imageDataUrl}" alt="">`
       }
 
       a.dataset.created = card.created || ''
